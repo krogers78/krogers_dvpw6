@@ -7,7 +7,7 @@ let csrfProtection = csrf();
 router.use(csrfProtection);
 
 router.get('/profile', isLoggedIn, (req, res, next) => {
-  res.render('user/profile');
+  res.render('user/profile', { title: 'Profile'});
 });
 router.get('/logout', isLoggedIn, (req, res, next) => {
   req.logout();
