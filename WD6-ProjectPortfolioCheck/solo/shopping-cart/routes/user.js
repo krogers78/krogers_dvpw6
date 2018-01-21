@@ -4,12 +4,19 @@ const csrf = require('csurf');
 const passport = require('passport');
 
 let csrfProtection = csrf();
+
+
+const Cart = require('../models/cart');
+const User = require('../models/user');
+
 router.use(csrfProtection);
 
 router.get('/profile', isLoggedIn, (req, res, next) => {
   res.render('user/profile', { title: 'Profile'});
 });
 router.get('/logout', isLoggedIn, (req, res, next) => {
+  // empties the cart session
+  req.session.cart = null;
   req.logout();
   res.redirect('/')
 });
@@ -45,6 +52,16 @@ router.post('/signin', passport.authenticate('local.signin', {
   failureRedirect: '/user/signin',
   failureFlash: true
 }), (req, res, next) => {
+  // updates the user's cart with the session cart
+  if (req.session.cart) {
+    req.user.cart = new Cart(req.session.cart);
+  
+    User.findByIdAndUpdate(req.user._id, req.user, err =>{
+      if (err) throw err;
+    });
+  }
+
+
   if (req.session.oldUrl) {
     let oldUrl = req.session.oldUrl;
     req.session.oldUrl = null;
