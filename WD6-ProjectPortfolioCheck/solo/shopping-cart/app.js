@@ -15,9 +15,9 @@ const MongoStore = require('connect-mongo')(session);
 const index = require('./routes/index');
 const userRoutes = require('./routes/user');
 
-var app = express();
+let app = express();
 
-mongoose.connect('localhost:27017/wd6international');
+mongoose.connect('localhost:27017/shoppingTest');
 require('./config/passport');
 
 // view engine setup
