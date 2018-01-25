@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+head
+  title Student's Grade Report
+  link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous")
+body( class="container p-3" style="background-color: rgb(248, 232, 251)")
+  h1(class="h2") Student Teacher Report
+  h3(class="lead") Input your student's name & final grade percentage (%):
+  //-  The form to submit a new grade
+  if errors
+    form(action="/newgrade" method="POST")
+      p(class="form-group row")
+        label(for="sname" class="col-sm-2 col-form-label") Name:
+        div(class="col-sm-10")  
+          input(type="text" class="form-control" id="sname" name="sname" placeholder="Jane Doe" value=`${text.sname}`)
+      p(class="form-group row")
+        label(for="spercent" class="col-sm-2 col-form-label") Percent (%) Grade:
+        div(class="col-sm-10")
+          input(type="text" class="form-control" id="spercent" name="spercent" placeholder="85" value=`${text.spercent}`)
+      //- Loop through the errors that come through
+      ul(class="alert alert-danger")
+        for err in errors
+          li(style="list-style-type:none")= err.msg
+      input(type="submit" class="btn btn-primary" value="Submit Query")
+  else 
+    form(action="/newgrade" method="POST")
+        p(class="form-group row")
+          label(for="sname" class="col-sm-2 col-form-label") Name:
+          div(class="col-sm-10")  
+            input(type="text" class="form-control" id="sname" name="sname" placeholder="Jane Doe")
+        p(class="form-group row")
+          label(for="spercent" class="col-sm-2 col-form-label") Percent (%) Grade:
+          div(class="col-sm-10")
+            input(type="text" class="form-control" id="spercent" name="spercent" placeholder="85")
+        input(type="submit" class="btn btn-primary" value="Submit Query")
+
+  //- The table to hold the results from the database
+  table(class="table mt-5")
+    thead(class="thead-dark")
+      tr
+        th(scope="col" class="text-center") ID
+        th(scope="col" class="text-center") Name
+        th(scope="col" class="text-center") Percent Grade
+        th(scope="col" class="text-center") Letter Grade
+        th(scope="col" class="text-center") Delete
+        th(scope="col" class="text-center") Update
+    tbody
+      for grade in grades
+        tr(class="table-warning")
+          td(class="text-center" scope="row")= grade._id
+          td(class="text-center")= grade.studentname
+          td(class="text-center")= grade.studentpercent + '%'
+          td(class="text-center")= grade.studentlettergrade
+          td(class="text-center")
+            a(href=`/delete-grade/${grade._id}` class="btn btn-primary") Delete
+          td(class="text-center")
+            a(href=`/edit-form/${grade._id}` class="btn btn-primary") Edit

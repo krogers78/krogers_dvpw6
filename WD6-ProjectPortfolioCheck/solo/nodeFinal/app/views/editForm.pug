@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+head
+  title Edit Grade
+  link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous")
+body(class="container p-3" style="background-color: rgb(248, 232, 251)")
+  h1 Edit the Student's Grade
+  p
+    a(href="/") Go Back
+  //- The form that will serve to update the grade
+  form(action="/edit-grade" method="POST")
+    p(class="form-group row")
+      label(for="studentname" class="col-sm-2 col-form-label") Name:
+      div(class="col-sm-10")
+        input(type="text" class="form-control" id="studentname" name="studentname" value=`${grade.studentname}`)
+    p(class="form-group row")
+      label(for="studentpercent" class="col-sm-2 col-form-label") Percent (%) Grade:
+      div(class="col-sm-10")
+        input(type="text" class="form-control" id="studentpercent" name="studentpercent" value=`${grade.studentpercent}`)
+    input(type="hidden" name="sid" value=`${grade._id}`)
+    input(type="submit" class="btn btn-primary" value="Update Grade")

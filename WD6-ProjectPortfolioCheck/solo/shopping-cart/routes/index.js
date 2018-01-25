@@ -21,7 +21,13 @@ router.get('/', function(req, res, next) {
 
 router.get('/add-to-cart/:id', (req, res, next) => {
   let productId = req.params.id;
-  let cart = new Cart(req.session.cart ? req.session.cart : {});
+  let cart; 
+  
+  if (req.user) {
+    cart = new Cart(req.user.cart ? req.user.cart : {});
+  } else {
+    cart = new Cart(req.session.cart ? req.session.cart : {});
+  }
 
   Product.findById(productId, (err, product) => {
     if (err) {
